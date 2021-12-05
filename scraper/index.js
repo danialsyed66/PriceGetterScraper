@@ -31,5 +31,6 @@ module.exports = async () => {
     darazTime,
     totalTime,
   });
-  console.log(`DONE in ${totalTime}`);
+
+  console.log(`DONE IN ${totalTime}`);
 };
