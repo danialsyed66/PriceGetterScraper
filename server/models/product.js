@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-const CATEGORIES = require("../../utils/categories").push("");
+const CATEGORIES = require("../../utils/categories");
+
+CATEGORIES.push("");
 
 const schema = new mongoose.Schema({
   name: {
