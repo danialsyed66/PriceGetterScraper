@@ -1,0 +1,19 @@
+{
+  "name": "pricegetterscraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node ./server/server.js"
+  },
+  "author": "Danial Syed",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.13",
+    "node-cron": "^3.0.0",
+    "puppeteer": "^12.0.1",
+    "query-string": "^7.0.1"
+  }
+}
