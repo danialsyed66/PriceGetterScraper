@@ -26,7 +26,7 @@ module.exports = async (puppeteerPage, products, url, category) => {
     )
       .map((i, el) => "https:" + $(el).attr("href"))
       .get();
-    const set = new Set([...a]);
+    const set = new Set([...arr]);
 
     const urls = [...set];
 
