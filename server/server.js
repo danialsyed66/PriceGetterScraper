@@ -33,7 +33,7 @@ mongoose
   );
 
 // cron.schedule("15 * * * *", async function () {
-cron.schedule("30 * * * *", async function () {
+cron.schedule("52 * * * *", async function () {
   console.log("Running scraper...");
   await scraper();
 });

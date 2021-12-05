@@ -21,9 +21,14 @@ module.exports = async (puppeteerPage, products, url, category) => {
     const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
     const $ = await cheerio.load(html);
 
-    const urls = $("div.c2iYAv > div > a")
+    const arr = $(
+      "#root > div > div > div > div > div.ant-col-20.ant-col-push-4 > div > div > div > div > div > div > a"
+    )
       .map((i, el) => "https:" + $(el).attr("href"))
       .get();
+    const set = new Set([...a]);
+
+    const urls = [...set];
 
     console.log(
       `Category: ${category}, Page: ${page}: Got ${urls.length} urls`
