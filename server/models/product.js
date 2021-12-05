@@ -1,46 +1,31 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const CATEGORIES = [
-  'Electronics',
-  'Cameras',
-  'Laptops',
-  'Accessories',
-  'Headphones',
-  'Food',
-  'Books',
-  'Clothes/Shoes',
-  'Beauty/Health',
-  'Sports',
-  'Outdoor',
-  'Home',
-  'Smart Phones',
-  '',
-];
+const CATEGORIES = require("../../utils/categories").push("");
 
 const schema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Product name is required'],
+    required: [true, "Product name is required"],
     trim: true,
-    maxLength: [100, 'Product name cannot exceed 100 characters'],
-    default: '',
+    maxLength: [100, "Product name cannot exceed 100 characters"],
+    default: "",
   },
   price: {
     type: Number,
-    required: [true, 'Product price is required'],
-    min: [0, 'Price should not be a negative number'],
-    maxLength: [5, 'Price cannot exceed 5 characters'],
+    required: [true, "Product price is required"],
+    min: [0, "Price should not be a negative number"],
+    maxLength: [5, "Price cannot exceed 5 characters"],
     default: 0.0,
   },
   description: {
     type: String,
-    required: [true, 'Product description is required'],
-    default: '',
+    required: [true, "Product description is required"],
+    default: "",
   },
   rating: {
     type: Number,
-    min: [0, 'Rating should not be a negative number'],
-    max: [5, 'Rating cannot be greater than 5'],
+    min: [0, "Rating should not be a negative number"],
+    max: [5, "Rating cannot be greater than 5"],
     default: 0,
   },
   images: [
@@ -51,23 +36,23 @@ const schema = new mongoose.Schema({
   ],
   category: {
     type: String,
-    required: [true, 'Product category is required'],
+    required: [true, "Product category is required"],
     enum: {
       values: CATEGORIES,
-      message: `Please Select a category from ${CATEGORIES.join(', ')}.`,
+      message: `Please Select a category from ${CATEGORIES.join(", ")}.`,
     },
-    default: '',
+    default: "",
   },
   seller: {
     type: String,
-    required: [true, 'Please enter product seller'],
-    default: '',
+    required: [true, "Please enter product seller"],
+    default: "",
   },
   stock: {
     type: Number,
-    required: [true, 'Product stock is required'],
-    min: [0, 'Stock should not be a negative number'],
-    maxLength: [5, 'Stock cannot exceed 5 characters'],
+    required: [true, "Product stock is required"],
+    min: [0, "Stock should not be a negative number"],
+    maxLength: [5, "Stock cannot exceed 5 characters"],
     default: 0,
   },
   noOfReviews: {
@@ -78,13 +63,13 @@ const schema = new mongoose.Schema({
     {
       rating: {
         type: Number,
-        required: [true, 'Rating is required for product review'],
-        min: [0, 'Rating should not be a negative number'],
-        max: [5, 'Rating cannot be greater than 5'],
+        required: [true, "Rating is required for product review"],
+        min: [0, "Rating should not be a negative number"],
+        max: [5, "Rating cannot be greater than 5"],
       },
       review: {
         type: String,
-        required: [true, 'Review is required for product review'],
+        required: [true, "Review is required for product review"],
       },
     },
   ],
@@ -97,6 +82,6 @@ const schema = new mongoose.Schema({
   installment: String,
 });
 
-const Model = mongoose.model('Product', schema);
+const Model = mongoose.model("Product", schema);
 
 module.exports = Model;

@@ -20,9 +20,11 @@ module.exports = async () => {
   await daraz(page, products);
   const darazTime = Date.now() - darazStartTime;
 
+  console.log(products);
+
   await browser.close();
 
-  await Movie.deleteMany();
+  await Product.deleteMany();
   await Product.create(products);
 
   const totalTime = Date.now() - startTime;
