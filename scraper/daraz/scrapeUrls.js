@@ -33,6 +33,7 @@ module.exports = async (puppeteerPage, products, url, category) => {
     console.log(
       `Category: ${category}, Page: ${page}: Got ${urls.length} urls`
     );
+    console.log(urls);
 
     urls.map((url) => {
       products.push({ url, category, seller: "Daraz" });
