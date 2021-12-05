@@ -22,6 +22,7 @@ module.exports = async () => {
 
   await browser.close();
 
+  await Movie.deleteMany();
   await Product.create(products);
 
   const totalTime = Date.now() - startTime;
