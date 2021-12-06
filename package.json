@@ -16,5 +16,8 @@
     "node-cron": "^3.0.0",
     "puppeteer": "^10.4.0",
     "query-string": "^7.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.4.0"
   }
 }
