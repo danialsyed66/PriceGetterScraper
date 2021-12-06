@@ -26,7 +26,7 @@ module.exports = async (puppeteerPage, products, url, category) => {
         .map((i, el) => "https:" + $(el).attr("href"))
         .get();
 
-      const set = a.map((url) => {
+      const set = arr.map((url) => {
         if (url.startsWith("https://www.daraz.pk/products")) return url;
       });
 
