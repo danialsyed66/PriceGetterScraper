@@ -24,8 +24,10 @@ module.exports = async () => {
 
   await browser.close();
 
-  await Product.deleteMany();
-  await Product.create(products);
+  if (products.length) {
+    await Product.deleteMany();
+    await Product.create(products);
+  }
 
   const totalTime = Date.now() - startTime;
 

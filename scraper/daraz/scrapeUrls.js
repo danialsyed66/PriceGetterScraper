@@ -22,14 +22,15 @@ module.exports = async (puppeteerPage, products, url, category) => {
       const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
       const $ = await cheerio.load(html);
 
-      const arr = $(
-        "#root > div > div > div > div > div.ant-col-20.ant-col-push-4 > div > div > div > div > div > div > a"
-      )
+      const arr = $("a")
         .map((i, el) => "https:" + $(el).attr("href"))
         .get();
-      const set = new Set([...arr]);
 
-      const urls = [...set].slice(0, 10);
+      const set = a.map((url) => {
+        if (url.startsWith("https://www.daraz.pk/products")) return url;
+      });
+
+      const urls = [...new Set([...set])];
 
       console.log(
         `Category: ${category}, Page: ${page}: Got ${urls.length} urls`
