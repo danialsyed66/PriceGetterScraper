@@ -37,6 +37,7 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products) => {
 };
 
 module.exports = async (puppeteerPage, products) => {
+  // await puppeteerPage.goto("https://www.daraz.pk/");
   await scrapeAllUrls(puppeteerPage, products);
 
   // await scrapeAllDescriptionPages(puppeteerPage, products);
