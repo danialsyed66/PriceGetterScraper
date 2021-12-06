@@ -9,14 +9,16 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
 
   console.log("calling $$eval");
 
-  await puppeteerPage.$$eval(
-    "#q",
-    (el, category) => {
-      el.value = category;
-      console.log(el.value);
-    },
-    category
-  );
+  // await puppeteerPage.$$eval(
+  //   "#q",
+  //   (el, category) => {
+  //     el.value = category;
+  //     console.log(el.value);
+  //   },
+  //   category
+  // );
+
+  await puppeteerPage.type("#q", category);
 
   const html1 = await puppeteerPage.evaluate(() => document.body.innerHTML);
   await puppeteerPage.click(".search-box__button--1oH7");
