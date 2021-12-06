@@ -6,9 +6,14 @@ module.exports = async (puppeteerPage, products, url, category) => {
     await puppeteerPage.goto("https://www.daraz.pk/", {
       waitUntil: "networkidle2",
     });
+
     await puppeteerPage.waitForSelector("#q");
 
-    await puppeteerPage.$eval("#q", (el, category) => (el.value = category));
+    await puppeteerPage.$eval(
+      "#q",
+      (el, category) => (el.value = category),
+      category
+    );
 
     await puppeteerPage.click(".search-box__button--1oH7");
 
@@ -17,21 +22,20 @@ module.exports = async (puppeteerPage, products, url, category) => {
     const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
     const $ = await cheerio.load(html);
 
-    const arr = $("a")
+    const arr = $(
+      "#root > div > div > div > div > div > div > div > div > div > div > div > a"
+    )
       .map((i, el) => "https:" + $(el).attr("href"))
       .get();
 
-    const set = arr.map((url) => {
+    const trimmed = arr.map((url) => {
       if (url.startsWith("https://www.daraz.pk/products")) return url;
     });
 
-    const urls = [...new Set([...set])];
-
-    console.log(
-      `Category: ${category}, Page: ${page}: Got ${urls.length} urls`
-    );
+    const urls = [...new Set([...trimmed])];
 
     urls.map((url) => {
+      if (!url) return;
       products.push({ url, category, seller: "Daraz" });
     });
   } catch (err) {

@@ -1,7 +1,7 @@
 const scrapeUrls2 = require("./scrapeUrls2");
 const scrapeDescriptionPage = require("./scrapeDescriptionPage");
 
-const CATEGORIES = require("../../utils/categories");
+const CATEGORIES = require("../../server/utils/categories");
 
 const url = "https://www.daraz.pk/catalog/";
 

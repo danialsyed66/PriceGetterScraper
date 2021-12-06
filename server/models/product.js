@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const CATEGORIES = [...require("../../utils/categories")];
+const CATEGORIES = [...require("../utils/categories")];
 
 CATEGORIES.push("");
 
