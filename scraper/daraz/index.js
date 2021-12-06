@@ -1,5 +1,5 @@
-const scrapeUrls2 = require("./scrapeUrls2");
-// const scrapeDescriptionPage = require("./scrapeDescriptionPage");
+const scrapeUrls = require("./scrapeUrls");
+const scrapeDescriptionPage = require("./scrapeDescriptionPage");
 
 const CATEGORIES = require("../../server/utils/categories");
 
@@ -11,7 +11,7 @@ const scrapeAllUrls = async (puppeteerPage, products, error, htmls) => {
     try {
       const category = CATEGORIES[index];
 
-      await scrapeUrls2(puppeteerPage, products, url, category, htmls);
+      await scrapeUrls(puppeteerPage, products, url, category, htmls);
     } catch (err) {
       error.position = "scrapeAllUrls";
       error.stack = err.stack;
@@ -20,26 +20,26 @@ const scrapeAllUrls = async (puppeteerPage, products, error, htmls) => {
   }
 };
 
-// const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
-//   console.log("Scraping Description Page");
+const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
+  console.log("Scraping Description Page");
 
-//   for (let index = 0; index < products.length; index++) {
-//     // for (let index = 0; index < 2; index++) {
-//     try {
-//       console.log(`Product: ${index + 1}`);
-//       const product = products[index];
+  for (let index = 0; index < products.length; index++) {
+    // for (let index = 0; index < 2; index++) {
+    try {
+      console.log(`Product: ${index + 1}`);
+      const product = products[index];
 
-//       await scrapeDescriptionPage(puppeteerPage, product, index);
-//     } catch (err) {
-//       error.position = "scrapeAllDescriptionPages";
-//       error.stack = err.stack;
-//       console.log(`Error at: ${error.position}: ${err.message}`);
-//     }
-//   }
-// };
+      await scrapeDescriptionPage(puppeteerPage, product, index);
+    } catch (err) {
+      error.position = "scrapeAllDescriptionPages";
+      error.stack = err.stack;
+      console.log(`Error at: ${error.position}: ${err.message}`);
+    }
+  }
+};
 
 module.exports = async (puppeteerPage, products, error, htmls) => {
   await scrapeAllUrls(puppeteerPage, products, error, htmls);
 
-  // await scrapeAllDescriptionPages(puppeteerPage, products, error);
+  await scrapeAllDescriptionPages(puppeteerPage, products, error);
 };
