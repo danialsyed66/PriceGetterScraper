@@ -5,7 +5,7 @@ const CATEGORIES = require("../../utils/categories");
 
 const url = "https://www.daraz.pk/catalog/";
 
-const scrapeAllUrls = async (puppeteerPage, products) => {
+const scrapeAllUrls = async (puppeteerPage, products, error) => {
   console.log("Scraping Urls");
   for (let index = 0; index < CATEGORIES.length; index++) {
     try {
@@ -13,13 +13,15 @@ const scrapeAllUrls = async (puppeteerPage, products) => {
 
       await scrapeUrls2(puppeteerPage, products, url, category);
     } catch (err) {
-      console.log("scrapeAllUrls");
-      console.log(err.stack);
+      error.position = "scrapeAllUrls";
+      error.stack = err.stack;
+      console.log(error.position);
+      console.log(error.stack);
     }
   }
 };
 
-const scrapeAllDescriptionPages = async (puppeteerPage, products) => {
+const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
   console.log("Scraping Description Page");
 
   for (let index = 0; index < products.length; index++) {
@@ -30,14 +32,16 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products) => {
 
       await scrapeDescriptionPage(puppeteerPage, product, index);
     } catch (err) {
-      console.log("scrapeAllDescriptionPages");
-      console.log(err.stack);
+      error.position = "scrapeAllDescriptionPages";
+      error.stack = err.stack;
+      console.log(error.position);
+      console.log(error.stack);
     }
   }
 };
 
-module.exports = async (puppeteerPage, products) => {
-  await scrapeAllUrls(puppeteerPage, products);
+module.exports = async (puppeteerPage, products, error) => {
+  await scrapeAllUrls(puppeteerPage, products, error);
 
-  await scrapeAllDescriptionPages(puppeteerPage, products);
+  await scrapeAllDescriptionPages(puppeteerPage, products, error);
 };
