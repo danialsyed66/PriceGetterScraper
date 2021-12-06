@@ -15,8 +15,7 @@ const scrapeAllUrls = async (puppeteerPage, products, error, htmls) => {
     } catch (err) {
       error.position = "scrapeAllUrls";
       error.stack = err.stack;
-      console.log(error.position);
-      console.log(error.stack);
+      console.log(`Error at: ${error.position}: ${err.message}`);
     }
   }
 };
@@ -34,8 +33,7 @@ const scrapeAllUrls = async (puppeteerPage, products, error, htmls) => {
 //     } catch (err) {
 //       error.position = "scrapeAllDescriptionPages";
 //       error.stack = err.stack;
-//       console.log(error.position);
-//       console.log(error.stack);
+//       console.log(`Error at: ${error.position}: ${err.message}`);
 //     }
 //   }
 // };

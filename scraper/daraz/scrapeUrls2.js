@@ -7,7 +7,9 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
 
   await puppeteerPage.waitForSelector("#q");
 
-  await puppeteerPage.$eval(
+  console.log("calling $$eval");
+
+  await puppeteerPage.$$eval(
     "#q",
     (el, category) => {
       el.value = category;
