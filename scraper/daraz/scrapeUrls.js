@@ -1,9 +1,7 @@
 const queryString = require("query-string");
 const cheerio = require("cheerio");
 
-const { spm } = require("../../server/utils/categories");
-
-module.exports = async (puppeteerPage, products, url, category, htmls) => {
+module.exports = async (puppeteerPage, products, url, category, spm, htmls) => {
   for (let page = 1; page < 2; page++) {
     console.log(`Category: ${category}, Page: ${page}`);
 
@@ -19,7 +17,7 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
           q: category,
           _keyori: "ss",
           from: "input",
-          spm: spm[category],
+          spm,
         },
       }),
       { waitUntil: "networkidle2" }
