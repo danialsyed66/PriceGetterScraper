@@ -11,6 +11,8 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
         query: {
           page,
           q: category,
+          _keyori: "ss",
+          from: "input",
         },
       }),
       { waitUntil: "networkidle2" }
