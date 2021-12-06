@@ -1,4 +1,4 @@
-const scrapeUrls = require("./scrapeUrls");
+const scrapeUrls2 = require("./scrapeUrls2");
 const scrapeDescriptionPage = require("./scrapeDescriptionPage");
 
 const CATEGORIES = require("../../utils/categories");
@@ -11,7 +11,7 @@ const scrapeAllUrls = async (puppeteerPage, products) => {
     try {
       const category = CATEGORIES[index];
 
-      await scrapeUrls(puppeteerPage, products, url, category);
+      await scrapeUrls2(puppeteerPage, products, url, category);
     } catch (err) {
       console.log("scrapeAllUrls");
       console.log(err.stack);
@@ -37,7 +37,9 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products) => {
 };
 
 module.exports = async (puppeteerPage, products) => {
-  // await puppeteerPage.goto("https://www.daraz.pk/");
+  await puppeteerPage.goto("https://www.daraz.pk/", {
+    waitUntil: "networkidle2",
+  });
   await scrapeAllUrls(puppeteerPage, products);
 
   // await scrapeAllDescriptionPages(puppeteerPage, products);
