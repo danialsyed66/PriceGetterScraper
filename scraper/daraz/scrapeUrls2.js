@@ -20,13 +20,12 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
 
   await puppeteerPage.type("#q", category);
 
-  const html1 = await puppeteerPage.evaluate(() => document.body.innerHTML);
   await puppeteerPage.click(".search-box__button--1oH7");
 
   await puppeteerPage.waitForNavigation({ waitUntil: "networkidle2" });
 
   const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
-  htmls.push({ html1, html });
+  htmls.push({ html });
 
   const $ = await cheerio.load(html);
 
