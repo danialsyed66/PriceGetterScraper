@@ -20,8 +20,6 @@ module.exports = async () => {
   await daraz(page, products);
   const darazTime = Date.now() - darazStartTime;
 
-  console.log(products);
-
   await browser.close();
 
   if (products.length) {
