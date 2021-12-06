@@ -1,9 +1,15 @@
 const queryString = require("query-string");
 const cheerio = require("cheerio");
 
+const { spm } = require("../../server/utils/categories");
+
 module.exports = async (puppeteerPage, products, url, category, htmls) => {
   for (let page = 1; page < 2; page++) {
     console.log(`Category: ${category}, Page: ${page}`);
+
+    await puppeteerPage.goto("https://www.daraz.pk/", {
+      waitUntil: "networkidle2",
+    });
 
     await puppeteerPage.goto(
       queryString.stringifyUrl({
@@ -13,9 +19,22 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
           q: category,
           _keyori: "ss",
           from: "input",
+          spm: spm[category],
         },
       }),
       { waitUntil: "networkidle2" }
+    );
+    console.log(
+      queryString.stringifyUrl({
+        url,
+        query: {
+          page,
+          q: category,
+          _keyori: "ss",
+          from: "input",
+          spm: spm[category],
+        },
+      })
     );
 
     const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
