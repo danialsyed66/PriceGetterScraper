@@ -7,6 +7,7 @@ const daraz = require("./daraz");
 module.exports = async () => {
   const products = [];
   const error = {};
+  const html = [];
   const startTime = Date.now();
   console.log("Scraping...");
 
@@ -18,7 +19,7 @@ module.exports = async () => {
 
   const darazStartTime = Date.now();
   console.log("Scraping Daraz");
-  await daraz(page, products, error);
+  await daraz(page, products, error, html);
   const darazTime = Date.now() - darazStartTime;
 
   await browser.close();
@@ -35,6 +36,7 @@ module.exports = async () => {
     darazTime,
     totalTime,
     error: error.position ? error : undefined,
+    html,
   });
 
   console.log(`DONE IN ${totalTime}`);
