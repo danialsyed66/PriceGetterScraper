@@ -11,15 +11,16 @@ module.exports = async (puppeteerPage, products, url, category) => {
 
     await puppeteerPage.$eval(
       "#q",
-      (el, category) => (el.value = category),
+      (el, category) => {
+        el.value = category;
+        console.log(el.value);
+      },
       category
     );
 
     await puppeteerPage.click(".search-box__button--1oH7");
 
-    await puppeteerPage.waitForSelector(
-      "#root > div > div > div > div > div > div > div > div > div > div > div > a"
-    );
+    await puppeteerPage.waitForSelector('[data-spm="list"]');
 
     const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
     const $ = await cheerio.load(html);
