@@ -7,9 +7,8 @@ module.exports = async (puppeteerPage, products, url, category) => {
       waitUntil: "networkidle2",
     });
     await puppeteerPage.waitForSelector("#q");
-    console.log(1111111111, category);
 
-    await puppeteerPage.$eval("#q", (el) => (el.value = category));
+    await puppeteerPage.$eval("#q", (el, category) => (el.value = category));
 
     await puppeteerPage.click(".search-box__button--1oH7");
 
