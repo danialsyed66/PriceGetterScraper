@@ -30,7 +30,10 @@ mongoose
   )
   .then((con) =>
     console.log(`Connected to MongoDB Host: ${con.connection.host}...`)
-  );
+  )
+  .then(async () => {
+    await scraper();
+  });
 
 // cron.schedule("15 * * * *", async function () {
 cron.schedule("32 * * * *", async function () {

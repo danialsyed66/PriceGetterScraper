@@ -7,10 +7,9 @@ module.exports = [
   "Sports",
   "Outdoor",
   "Home",
+  "Smart Phones",
+  "Cameras",
+  "Laptops",
+  "Accessories",
+  "Headphones",
 ];
-
-// "Smart Phones",
-// "Cameras",
-// "Laptops",
-// "Accessories",
-// "Headphones",

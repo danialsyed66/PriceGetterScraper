@@ -8,9 +8,14 @@ const url = "https://www.daraz.pk/catalog/";
 const scrapeAllUrls = async (puppeteerPage, products) => {
   console.log("Scraping Urls");
   for (let index = 0; index < CATEGORIES.length; index++) {
-    const category = CATEGORIES[index];
+    try {
+      const category = CATEGORIES[index];
 
-    await scrapeUrls(puppeteerPage, products, url, category);
+      await scrapeUrls(puppeteerPage, products, url, category);
+    } catch (err) {
+      console.log("scrapeAllUrls");
+      console.log(err.stack);
+    }
   }
 };
 
@@ -19,10 +24,15 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products) => {
 
   for (let index = 0; index < products.length; index++) {
     // for (let index = 0; index < 2; index++) {
-    console.log(`Product: ${index + 1}`);
-    const product = products[index];
+    try {
+      console.log(`Product: ${index + 1}`);
+      const product = products[index];
 
-    await scrapeDescriptionPage(puppeteerPage, product, index);
+      await scrapeDescriptionPage(puppeteerPage, product, index);
+    } catch (err) {
+      console.log("scrapeAllDescriptionPages");
+      console.log(err.stack);
+    }
   }
 };
 
