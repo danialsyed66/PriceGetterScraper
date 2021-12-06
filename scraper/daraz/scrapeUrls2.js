@@ -17,7 +17,9 @@ module.exports = async (puppeteerPage, products, url, category) => {
 
     await puppeteerPage.click(".search-box__button--1oH7");
 
-    await puppeteerPage.waitForSelector('[data-tracking="product-card"]');
+    await puppeteerPage.waitForSelector(
+      "#root > div > div > div > div > div > div > div > div > div > div > div > a"
+    );
 
     const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
     const $ = await cheerio.load(html);
