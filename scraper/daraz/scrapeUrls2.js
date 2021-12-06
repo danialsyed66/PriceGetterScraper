@@ -1,5 +1,4 @@
-// const queryString = require("query-string");
-// const cheerio = require("cheerio");
+const cheerio = require("cheerio");
 
 module.exports = async (puppeteerPage, products, url, category, htmls) => {
   await puppeteerPage.goto("https://www.daraz.pk/", {
@@ -20,25 +19,27 @@ module.exports = async (puppeteerPage, products, url, category, htmls) => {
   const html1 = await puppeteerPage.evaluate(() => document.body.innerHTML);
   await puppeteerPage.click(".search-box__button--1oH7");
 
-  // await puppeteerPage.waitForSelector('[data-spm="list"]');
+  await puppeteerPage.waitForNavigation({ waitUntil: "networkidle2" });
 
   const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
   htmls.push({ html1, html });
 
-  // const arr = $(
-  //   "#root > div > div > div > div > div > div > div > div > div > div > div > a"
-  // )
-  //   .map((i, el) => "https:" + $(el).attr("href"))
-  //   .get();
+  const $ = await cheerio.load(html);
 
-  // const trimmed = arr.map((url) => {
-  //   if (url.startsWith("https://www.daraz.pk/products")) return url;
-  // });
+  const arr = $(
+    "#root > div > div > div > div > div > div > div > div > div > div > div > a"
+  )
+    .map((i, el) => "https:" + $(el).attr("href"))
+    .get();
 
-  // const urls = [...new Set([...trimmed])];
+  const trimmed = arr.map((url) => {
+    if (url.startsWith("https://www.daraz.pk/products")) return url;
+  });
 
-  // urls.map((url) => {
-  //   if (!url) return;
-  //   products.push({ url, category, seller: "Daraz" });
-  // });
+  const urls = [...new Set([...trimmed])];
+
+  urls.map((url) => {
+    if (!url) return;
+    products.push({ url, category, seller: "Daraz" });
+  });
 };

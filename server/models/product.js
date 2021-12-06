@@ -79,6 +79,7 @@ const schema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  url: String,
   discount: String,
   brand: String,
   installment: String,
