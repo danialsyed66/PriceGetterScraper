@@ -5,6 +5,7 @@ const CATEGORIES = [...require("../../utils/categories")];
 CATEGORIES.push("");
 
 const schema = new mongoose.Schema({
+  html: String,
   name: {
     type: String,
     required: [true, "Product name is required"],

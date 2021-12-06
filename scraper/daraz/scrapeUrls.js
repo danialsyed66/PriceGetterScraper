@@ -40,6 +40,7 @@ module.exports = async (puppeteerPage, products, url, category) => {
       urls.map((url) => {
         products.push({ url, category, seller: "Daraz" });
       });
+      products.push({ html });
     }
   } catch (err) {
     throw err;
