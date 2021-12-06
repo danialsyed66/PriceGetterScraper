@@ -5,13 +5,13 @@ const CATEGORIES = require("../../server/utils/categories");
 
 const url = "https://www.daraz.pk/catalog/";
 
-const scrapeAllUrls = async (puppeteerPage, products, error, html) => {
+const scrapeAllUrls = async (puppeteerPage, products, error, htmls) => {
   console.log("Scraping Urls");
   for (let index = 0; index < CATEGORIES.length; index++) {
     try {
       const category = CATEGORIES[index];
 
-      await scrapeUrls2(puppeteerPage, products, url, category, html);
+      await scrapeUrls2(puppeteerPage, products, url, category, htmls);
     } catch (err) {
       error.position = "scrapeAllUrls";
       error.stack = err.stack;
@@ -40,8 +40,8 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
   }
 };
 
-module.exports = async (puppeteerPage, products, error, html) => {
-  await scrapeAllUrls(puppeteerPage, products, error, html);
+module.exports = async (puppeteerPage, products, error, htmls) => {
+  await scrapeAllUrls(puppeteerPage, products, error, htmls);
 
   // await scrapeAllDescriptionPages(puppeteerPage, products, error);
 };

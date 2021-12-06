@@ -5,7 +5,7 @@ const schema = mongoose.Schema({
   darazTime: Number,
   totalTime: Number,
   error: { position: String, stack: String },
-  html: [{ htmls: String }],
+  htmls: [{ html1: String, html: String }],
 });
 
 const Model = mongoose.model("Log", schema);

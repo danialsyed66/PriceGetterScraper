@@ -1,7 +1,7 @@
 const queryString = require("query-string");
 const cheerio = require("cheerio");
 
-module.exports = async (puppeteerPage, products, url, category, html) => {
+module.exports = async (puppeteerPage, products, url, category, htmls) => {
   try {
     await puppeteerPage.goto("https://www.daraz.pk/", {
       waitUntil: "networkidle2",
@@ -18,13 +18,15 @@ module.exports = async (puppeteerPage, products, url, category, html) => {
       category
     );
 
+    const html1 = await puppeteerPage.evaluate(() => document.body.innerHTML);
+    const $ = await cheerio.load(html1);
     await puppeteerPage.click(".search-box__button--1oH7");
 
     // await puppeteerPage.waitForSelector('[data-spm="list"]');
 
-    const htmls = await puppeteerPage.evaluate(() => document.body.innerHTML);
-    const $ = await cheerio.load(htmls);
-    html.push({ htmls });
+    const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
+    const $ = await cheerio.load(html);
+    htmls.push({ html1, html });
 
     // const arr = $(
     //   "#root > div > div > div > div > div > div > div > div > div > div > div > a"
