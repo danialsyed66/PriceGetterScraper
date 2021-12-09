@@ -13,7 +13,7 @@ module.exports = async (puppeteerPage, products, url, category, spm, htmls) => {
       queryString.stringifyUrl({
         url,
         query: {
-          page,
+          page: page === 1 ? undefined : page,
           q: category,
           _keyori: "ss",
           from: "input",
