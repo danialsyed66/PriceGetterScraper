@@ -6,15 +6,19 @@ const scraper = require("../scraper");
 
 const app = express();
 
+// eslint-disable-next-line no-undef
 process.on("uncaughtException", (err) => {
   console.log("UNCAUGHT EXCEPTION!!! 💥");
   console.log(err.name, ": ", err.message);
   console.log(err.stack);
   console.log(`Shutting down the server due to an uncaught exception`);
+  // eslint-disable-next-line no-undef
   process.exit(1);
 });
 
+// eslint-disable-next-line no-undef
 app.listen(process.env.PORT || 8000, () =>
+  // eslint-disable-next-line no-undef
   console.log(`Listening on port ${process.env.PORT || 8000}...`)
 );
 
@@ -32,19 +36,20 @@ mongoose
     console.log(`Connected to MongoDB Host: ${con.connection.host}...`)
   )
   .then(async () => {
-    await scraper();
+    // await scraper();
   });
 
-cron.schedule("15 * * * *", async function () {
+cron.schedule("15 0 * * *", async function () {
   console.log("Running scraper...");
-  await scraper();
+  // await scraper();
 });
 
+// eslint-disable-next-line no-undef
 process.on("unhandledRejection", (err) => {
   console.log("UNCAUGHT REJECTION!!! 💥");
   console.log(err.name, ": ", err.message);
   console.log(err.stack);
   console.log("Shutting down server due to unhandled rejection");
-
+  // eslint-disable-next-line no-undef
   process.exit(1);
 });

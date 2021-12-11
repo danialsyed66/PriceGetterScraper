@@ -6,20 +6,13 @@ const spm = require("../../server/utils/spm");
 
 const url = "https://www.daraz.pk/catalog/";
 
-const scrapeAllUrls = async (puppeteerPage, products, error, htmls) => {
+const scrapeAllUrls = async (puppeteerPage, products, error) => {
   console.log("Scraping Urls");
   for (let index = 0; index < CATEGORIES.length; index++) {
     try {
       const category = CATEGORIES[index];
 
-      await scrapeUrls(
-        puppeteerPage,
-        products,
-        url,
-        category,
-        spm[category],
-        htmls
-      );
+      await scrapeUrls(puppeteerPage, products, url, category, spm[category]);
     } catch (err) {
       error.position = "scrapeAllUrls";
       error.stack = err.stack;
@@ -46,8 +39,8 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
   }
 };
 
-module.exports = async (puppeteerPage, products, error, htmls) => {
-  await scrapeAllUrls(puppeteerPage, products, error, htmls);
+module.exports = async (puppeteerPage, products, error) => {
+  await scrapeAllUrls(puppeteerPage, products, error);
 
   await scrapeAllDescriptionPages(puppeteerPage, products, error);
 };

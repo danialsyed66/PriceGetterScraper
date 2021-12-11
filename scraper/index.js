@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const fs = require("fs");
 
 const Log = require("../server/models/log");
 const Product = require("../server/models/product");
@@ -10,6 +11,12 @@ module.exports = async () => {
   const htmls = [];
   const startTime = Date.now();
   console.log("Scraping...");
+
+  // products.push({
+  //   url: "https://www.daraz.pk/products/wireless-ip-camera-360a-view-rotatable-hd-wifi-cctv-surveillance-camera-ptz-night-vision-two-way-audio-motion-detection-sd-card-slot-v380-white-i1446478-s1283078890.html?spm=a2a0e.searchlist.list.2.7f241290PYQMGi&search=1",
+  //   seller: "daraz",
+  //   category: { search: "Cameras" },
+  // });
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -24,6 +31,8 @@ module.exports = async () => {
 
   await browser.close();
 
+  fs.writeFileSync("products.json", JSON.stringify(products));
+
   if (products.length) {
     await Product.deleteMany();
     await Product.create(products);
@@ -36,7 +45,6 @@ module.exports = async () => {
     darazTime,
     totalTime,
     error: error.position ? error : undefined,
-    htmls,
   });
 
   console.log(`DONE IN ${totalTime}`);

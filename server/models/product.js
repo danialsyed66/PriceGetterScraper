@@ -9,20 +9,20 @@ const schema = new mongoose.Schema({
     type: String,
     required: [true, "Product name is required"],
     trim: true,
-    maxLength: [100, "Product name cannot exceed 100 characters"],
-    default: "",
   },
   price: {
     type: Number,
     required: [true, "Product price is required"],
     min: [0, "Price should not be a negative number"],
-    maxLength: [5, "Price cannot exceed 5 characters"],
-    default: 0.0,
+  },
+  shippingCost: {
+    type: Number,
+    min: [0, "Shipping Cost should not be a negative number"],
+    default: 0,
   },
   description: {
     type: String,
     required: [true, "Product description is required"],
-    default: "",
   },
   rating: {
     type: Number,
@@ -32,30 +32,32 @@ const schema = new mongoose.Schema({
   },
   images: [
     {
-      public_id: { type: String, required: true },
+      public_id: { type: String },
       url: { type: String, required: true },
     },
   ],
   category: {
-    type: String,
-    required: [true, "Product category is required"],
-    enum: {
-      values: CATEGORIES,
-      message: `Please Select a category from ${CATEGORIES.join(", ")}.`,
+    search: {
+      type: String,
+      required: [true, "Product category is required"],
+      enum: {
+        values: CATEGORIES,
+        message: `Please Select a category from ${CATEGORIES.join(", ")}.`,
+      },
+      default: "",
     },
-    default: "",
+    head: String,
+    sub: String,
+    base: String,
   },
   seller: {
     type: String,
     required: [true, "Please enter product seller"],
-    default: "",
   },
   stock: {
-    type: Number,
-    required: [true, "Product stock is required"],
-    min: [0, "Stock should not be a negative number"],
-    maxLength: [5, "Stock cannot exceed 5 characters"],
-    default: 0,
+    type: String,
+    required: [true, "Product stock information is required"],
+    default: "In Stock",
   },
   noOfReviews: {
     type: Number,

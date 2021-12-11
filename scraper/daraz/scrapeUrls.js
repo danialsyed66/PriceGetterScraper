@@ -1,7 +1,7 @@
 const queryString = require("query-string");
 const cheerio = require("cheerio");
 
-module.exports = async (puppeteerPage, products, url, category, spm, htmls) => {
+module.exports = async (puppeteerPage, products, url, category, spm) => {
   for (let page = 1; page < 2; page++) {
     console.log(`Category: ${category}, Page: ${page}`);
 
@@ -22,23 +22,9 @@ module.exports = async (puppeteerPage, products, url, category, spm, htmls) => {
       }),
       { waitUntil: "networkidle2" }
     );
-    console.log(
-      queryString.stringifyUrl({
-        url,
-        query: {
-          page,
-          q: category,
-          _keyori: "ss",
-          from: "input",
-          spm: spm[category],
-        },
-      })
-    );
 
     const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
     const $ = await cheerio.load(html);
-
-    htmls.push({ html });
 
     const arr = $(
       "#root > div > div > div > div > div > div > div > div > div > div > div > a"
@@ -50,11 +36,11 @@ module.exports = async (puppeteerPage, products, url, category, spm, htmls) => {
       if (url.startsWith("https://www.daraz.pk/products")) return url;
     });
 
-    const urls = [...new Set([...trimmed])];
+    const urls = [...new Set([...trimmed])].slice(0, 10);
 
     urls.map((url) => {
       if (!url) return;
-      products.push({ url, category, seller: "Daraz" });
+      products.push({ url, category: { search: category }, seller: "Daraz" });
     });
 
     console.log(
