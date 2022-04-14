@@ -3,16 +3,14 @@ const { scrollPageToBottom } = require('puppeteer-autoscroll-down');
 
 module.exports = async (puppeteerPage, product) => {
   // await puppeteerPage.goto(product.url, { waitUntil: 'domcontentloaded' });
-  await puppeteerPage.goto(product.url, {
-    waitUntil: 'domcontentloaded',
-    timeout: 10000,
-  });
+  await puppeteerPage.goto(product.url, { waitUntil: 'load', timeout: 10000 });
   await scrollPageToBottom(puppeteerPage, {
     size: 500,
     delay: 1000,
     stepsLimit: 4,
   });
   await puppeteerPage.waitForSelector('div.pdp-product-highlights > ul > li');
+  await puppeteerPage.waitForSelector('div.item-content > div.content');
 
   const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
   const $ = await cheerio.load(html);
@@ -102,5 +100,5 @@ module.exports = async (puppeteerPage, product) => {
     })
     .get();
 
-  product.images = images.map(img => ({ url: img }));
+  product.images = images.map((img) => ({ url: img }));
 };
