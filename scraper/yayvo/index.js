@@ -33,6 +33,8 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
       console.log(`Product: ${index + 1}`);
 
       await scrapeDescriptionPage(puppeteerPage, product, index);
+
+      product.seller = '622241a965458731887a8ff6';
     } catch (err) {
       error.position = 'scrapeYayoDescriptionPages';
       error.stack = err.stack;

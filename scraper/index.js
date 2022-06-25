@@ -1,60 +1,74 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const puppeteer = require('puppeteer');
 
-const createOrUpdateProducts = require('../server/utils/createOrUpdateProducts')
-const Log = require('../server/models/log')
+const createOrUpdateProducts = require('../server/utils/createOrUpdateProducts');
+const Product = require('../server/models/Product');
 
-const scrapeDaraz = require('./daraz');
-const scrapeYayvo = require('./yayvo');
-const scrapeGoto = require('./goto');
+const Log = require('../server/models/log');
+
+// const scrapeDaraz = require('./daraz');
+// const scrapeYayvo = require('./yayvo');
+// const scrapeGoto = require('./goto');
+const scrapeiBucket = require('./iBucket');
 
 module.exports = async () => {
   console.log('Scraping...');
-
-  const error = { total: 0 };
-  const products = [];
   const startTime = Date.now();
 
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox'],
-  });
-  const page = await browser.newPage();
+  const error = { total: 0 };
+  // const products = [];
+  const { products } = JSON.parse(await fs.readFile('products.json', 'binary'));
 
-  const darazStartTime = Date.now();
-  console.log('Scraping Daraz');
-  await scrapeDaraz(page, products, error);
-  const darazTime = Date.now() - darazStartTime;
+  console.log('Scraping... 2');
+  Product.insertMany(products);
+  console.log('Scraping... 3');
 
-  const yayvoStartTime = Date.now();
-  console.log('Scraping Yayvo');
-  await scrapeYayvo(page, products, error);
-  const yayvoTime = Date.now() - yayvoStartTime;
+  // const browser = await puppeteer.launch({
+  //   headless: false,
+  //   args: ['--no-sandbox'],
+  // });
+  // const page = await browser.newPage();
 
-  const gotoStartTime = Date.now();
-  console.log('Scraping Goto');
-  await scrapeGoto(page, products, error);
-  const gotoTime = Date.now() - gotoStartTime;
+  // const darazStartTime = Date.now();
+  // console.log('Scraping Daraz');
+  // await scrapeDaraz(page, products, error);
+  // const darazTime = Date.now() - darazStartTime;
 
-  await browser.close();
+  // const yayvoStartTime = Date.now();
+  // console.log('Scraping Yayvo');
+  // await scrapeYayvo(page, products, error);
+  // const yayvoTime = Date.now() - yayvoStartTime;
 
-  await createOrUpdateProducts(products);
+  // const gotoStartTime = Date.now();
+  // console.log('Scraping Goto');
+  // await scrapeGoto(page, products, error);
+  // const gotoTime = Date.now() - gotoStartTime;
+
+  // const iBucketStartTime = Date.now();
+  // console.log('Scraping iBucket');
+  // await scrapeiBucket(page, products, error);
+  // const iBucketTime = Date.now() - iBucketStartTime;
+
+  // await browser.close();
+
+  // await createOrUpdateProducts(products);
 
   const totalTime = Date.now() - startTime;
 
   await Log.create({
     startTime,
-    darazTime,
-    yayvoTime,
-    gotoTime,
+    // darazTime,
+    // yayvoTime,
+    // gotoTime,
+    // iBucketTime,
     totalTime,
     error: error.position ? error : undefined,
   });
 
-  fs.writeFileSync(
-    'products.json',
-    JSON.stringify({ results: products.length, products })
-  );
+  // await fs.writeFile(
+  //   'products.json',
+  //   JSON.stringify({ results: products.length, products })
+  // );
 
   console.log(`DONE IN ${totalTime}`);
 };

@@ -11,13 +11,7 @@ const scrapeAllUrls = async (puppeteerPage, products, error) => {
     try {
       const category = CATEGORIES[index];
 
-      await scrapeUrls(
-        puppeteerPage,
-        products,
-        url,
-        category,
-        error
-      );
+      await scrapeUrls(puppeteerPage, products, url, category, error);
     } catch (err) {
       error.position = 'scrapeDarazUrls';
       error.stack = err.stack;
@@ -39,6 +33,8 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
       console.log(`Product: ${index + 1}`);
 
       await scrapeDescriptionPage(puppeteerPage, product, index);
+
+      product.seller = '6222415a65458731887a8ff4';
     } catch (err) {
       error.position = 'scrapeDarazDescriptionPages';
       error.stack = err.stack;

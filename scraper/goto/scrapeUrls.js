@@ -2,11 +2,20 @@ const cheerio = require('cheerio');
 
 const productExists = require('../../server/utils/productExists');
 
-module.exports = async (puppeteerPage, products, url, category, error) => {
+module.exports = async (
+  puppeteerPage,
+  products,
+  url,
+  category,
+  error,
+  direct = false
+) => {
   for (let page = 1; page < 2; page++) {
     console.log(`Goto Category: ${category}, Page: ${page}`);
 
-    await puppeteerPage.goto(`${url}q/${encodeURI(category)}`, {
+    const gotoUrl = direct ? url : `${url}q/${encodeURI(category)}`;
+
+    await puppeteerPage.goto(gotoUrl, {
       waitUntil: 'domcontentloaded',
       timeout: 30000,
     });
@@ -18,10 +27,10 @@ module.exports = async (puppeteerPage, products, url, category, error) => {
       .map((i, el) => $(el).attr('href'))
       .get();
 
-    // const urls = [...new Set([...arr])];
-    const urls = [...new Set([...arr])].slice(0, 5);
+    const urls = [...new Set([...arr])];
+    // const urls = [...new Set([...arr])].slice(0, 5);
 
-    urls.map(async (url) => {
+    urls.map(async url => {
       if (!url) return;
 
       error.total += 1;
@@ -30,8 +39,6 @@ module.exports = async (puppeteerPage, products, url, category, error) => {
 
       products.push({ url, category: { search: category }, seller: 'Goto' });
     });
-
-    console.log(urls);
 
     console.log(`Category: ${category}, Got ${urls.length} urls`);
   }

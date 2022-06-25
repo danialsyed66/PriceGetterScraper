@@ -1,38 +1,24 @@
 const scrapeUrls = require('./scrapeUrls');
 const scrapeDescriptionPage = require('./scrapeDescriptionPage');
 
-const CATEGORIES = require('../../server/utils/categories');
-const { gotoCategoryPages } = require('../../server/utils/categoryPages');
-
-const url = 'https://www.goto.com.pk/catalog-search/filter/';
+const { iBucketCategoryPages } = require('../../server/utils/categoryPages');
 
 const scrapeAllUrls = async (puppeteerPage, products, error) => {
-  console.log('Scraping Goto Urls');
-  for (let index = 0; index < CATEGORIES.length; index++) {
-    try {
-      const category = CATEGORIES[index];
+  console.log('Scraping iBucket Urls');
 
-      await scrapeUrls(puppeteerPage, products, url, category, error);
-    } catch (err) {
-      error.position = 'scrapeGotoUrls';
-      error.stack = err.stack;
-      console.log(`Error at: ${error.position}: ${err.message}`);
-    }
-  }
-  for (let index = 0; index < gotoCategoryPages.length; index++) {
+  for (let index = 0; index < iBucketCategoryPages.length; index++) {
     try {
-      const gotoCategoryPage = gotoCategoryPages[index];
+      const iBucketCategoryPage = iBucketCategoryPages[index];
 
       await scrapeUrls(
         puppeteerPage,
         products,
-        gotoCategoryPage.url,
-        gotoCategoryPage.category,
-        error,
-        true
+        iBucketCategoryPage.url,
+        iBucketCategoryPage.category,
+        error
       );
     } catch (err) {
-      error.position = 'scrapeGotoUrls';
+      error.position = 'scrapeIBucketUrls';
       error.stack = err.stack;
       console.log(`Error at: ${error.position}: ${err.message}`);
     }
@@ -40,20 +26,20 @@ const scrapeAllUrls = async (puppeteerPage, products, error) => {
 };
 
 const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
-  console.log('Scraping Goto Description Page');
+  console.log('Scraping iBucket Description Page');
 
   for (let index = 0; index < products.length; index++) {
     // for (let index = 0; index < 2; index++) {
     try {
       const product = products[index];
-      if (product.seller !== 'Goto') continue;
+      if (product.seller !== 'iBucket') continue;
 
       console.log(`Product: ${index + 1}`);
 
       await scrapeDescriptionPage(puppeteerPage, product, index);
-      product.seller = '622241c465458731887a8ff8';
+      product.seller = '628955047249d31c084d5301';
     } catch (err) {
-      error.position = 'scrapeGotoDescriptionPages';
+      error.position = 'scrapeIBucketDescriptionPages';
       error.stack = err.stack;
       console.log(`Error at: ${error.position}: ${err.message}`);
     }

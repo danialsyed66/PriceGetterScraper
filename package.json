@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node ./server/server.js",
+    "dev": "nodemon ./server/server.js",
     "ndb": "ndb ./server/server.js"
   },
   "author": "Danial Syed",

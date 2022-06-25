@@ -1,104 +1,47 @@
 const cheerio = require('cheerio');
-const { scrollPageToBottom } = require('puppeteer-autoscroll-down');
 
 module.exports = async (puppeteerPage, product) => {
-  // await puppeteerPage.goto(product.url, { waitUntil: 'domcontentloaded' });
-  await puppeteerPage.goto(product.url, { waitUntil: 'load', timeout: 10000 });
-  await scrollPageToBottom(puppeteerPage, {
-    size: 500,
-    delay: 1000,
-    stepsLimit: 4,
-  });
-  await puppeteerPage.waitForSelector('div.pdp-product-highlights > ul > li');
-  await puppeteerPage.waitForSelector('div.item-content > div.content');
+  await puppeteerPage.goto(product.url, { waitUntil: 'domcontentloaded' });
+  // await puppeteerPage.goto(product.url, { waitUntil: 'load', timeout: 10000 });
 
   const html = await puppeteerPage.evaluate(() => document.body.innerHTML);
   const $ = await cheerio.load(html);
 
-  product.name = $('span.pdp-mod-product-badge-title').text().trim();
-  product.discount = $('span.pdp-product-price__discount')
-    .text()
-    .trim()
-    .slice(1);
-  product.installment = $('#module_installment > div > div > div > p')
-    .text()
-    .trim();
-  product.rating = +$('span.score-average').text().trim();
-  product.brand = $('#module_product_brand_1 > div > a:nth-child(2)')
-    .text()
-    .trim();
-  product.warranty = $(
-    'div.delivery-option-item_type_warranty > div > div > div.delivery-option-item__title'
-  )
-    .text()
-    .trim();
-  product.noOfReviews = parseInt($('div.summary > div.count').text().trim());
+  product.name = $('.product-name').text().trim();
 
-  const price = $('span.pdp-price_type_normal')
-    .text()
-    .trim()
-    .slice(4)
-    .replace(/,/g, '');
-  product.price = parseFloat(price);
+  product.price = +$('#specialPriceBox > span').text().trim().replace(/,/g, '');
 
-  const oldPrice = $('span.pdp-price_type_deleted')
-    .text()
-    .trim()
-    .slice(4)
-    .replace(/,/g, '');
-  product.oldPrice = parseFloat(oldPrice);
+  product.rating = +$('.if-rating-zero > .badge').text().trim();
 
-  const shippingCost = $('div.delivery-option-item__shipping-fee')
-    .text()
-    .trim()
-    .slice(4)
-    .replace(/,/g, '');
-  product.shippingCost = parseFloat(shippingCost);
+  product.description = $('#description').text().trim();
 
-  product.stock = $(
-    'a.next-number-picker-handler-up'
-  )?.attribs?.class?.includes('next-number-picker-handler-up-disabled')
-    ? 'Out of Stock'
-    : 'In Stock';
+  product.noOfReviews = parseInt($('.if-rating-zero > .badge').text().trim());
 
-  const categories = $('#J_breadcrumb > li > span > a > span');
+  product.brand = $('.product-brand').text().trim();
 
-  product.category.head = categories[0]?.children[0]?.data;
-  product.category.sub = categories[1]?.children[0]?.data;
-  product.category.base = categories[2]?.children[0]?.data;
+  const breadcrumbs = $('.breadcrumbs > li > a > span');
 
-  const lis = $('div.pdp-product-highlights > ul > li');
-
-  let description = '';
-
-  for (let index = 0; index < lis.length; index++) {
-    description = `${description}, ${index + 1}: ${$(lis[index])
-      .text()
-      .trim()}`;
-  }
-
-  product.description = description.slice(2);
+  product.category.head = breadcrumbs[1]?.children[0]?.data;
+  product.category.sub = breadcrumbs[2]?.children[0]?.data;
+  product.category.base = breadcrumbs[3]?.children[0]?.data;
 
   product.reviews = [];
 
-  const reviewsContent = $('div.item-content > div.content');
+  const reviewText = $('.scrollStyle > li .rev-des');
+  const reviewRating = $('.scrollStyle > li .badge');
 
-  for (let index = 0; index < reviewsContent.length; index++) {
-    const stars = $($(`div.starCtn`)[0]).html();
+  for (let index = 0; index < reviewText?.length; index++) {
+    const review = reviewText[index].textContent.trim();
+    const rating = +reviewRating[index].textContent.trim();
 
-    product.reviews.push({
-      review: $(reviewsContent[index]).text().trim(),
-      rating: stars.match(/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png/g).length,
-    });
+    product.reviews.push({ review, rating });
   }
 
-  const images = $('img.item-gallery__thumbnail-image')
-    .map((i, img) => {
-      const val = img?.attribs?.src;
-      const sliceTo = val?.indexOf('.jpg') + 4;
-      return val?.slice(0, sliceTo);
-    })
-    .get();
+  product.shippingCost = +$('.shipping-price')
+    .text()
+    .trim()
+    .slice(4)
+    .replace(/,/g, '');
 
-  product.images = images.map((img) => ({ url: img }));
+  product.stock = 'In Stock';
 };

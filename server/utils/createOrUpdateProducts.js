@@ -20,6 +20,7 @@ module.exports = async products => {
         useFindAndModify: false,
       });
     } catch (err) {
+      console.log(err);
       console.log(i);
     }
   });

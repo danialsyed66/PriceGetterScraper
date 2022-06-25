@@ -26,7 +26,7 @@ module.exports = async (puppeteerPage, products, url, category, error) => {
   const urls = [...new Set([...arr])];
   // const urls = [...new Set([...arr])].slice(0, 5);
 
-  urls.map(async (url) => {
+  urls.map(async url => {
     if (!url) return;
 
     error.total += 1;
