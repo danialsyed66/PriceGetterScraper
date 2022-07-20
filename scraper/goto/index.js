@@ -61,7 +61,7 @@ const scrapeAllDescriptionPages = async (puppeteerPage, products, error) => {
 };
 
 module.exports = async (puppeteerPage, products, error) => {
-  // await scrapeAllUrls(puppeteerPage, products, error);
+  await scrapeAllUrls(puppeteerPage, products, error);
 
   await scrapeAllDescriptionPages(puppeteerPage, products, error);
 };
